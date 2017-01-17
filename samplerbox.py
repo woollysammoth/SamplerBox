@@ -495,9 +495,9 @@ while True:
             if preset < 0:
                 preset = 127
             LoadSamples()
-    elif line[:-1] == "-1":
-        preset += 1
-        if preset > 127:
-            preset = 0
-        LoadSamples()
+        elif line[:-1] == "-1":
+            preset += 1
+            if preset > 127:
+                preset = 0
+            LoadSamples()
     time.sleep(2)
