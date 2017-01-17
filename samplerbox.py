@@ -32,6 +32,8 @@ import time
 import numpy
 import os
 import re
+import sys
+import json
 import sounddevice
 import threading
 from chunk import Chunk
@@ -395,6 +397,23 @@ if USE_BUTTONS:
     ButtonsThread = threading.Thread(target=Buttons)
     ButtonsThread.daemon = True
     ButtonsThread.start()
+
+#########################################
+# Listen for command to change preset from Node
+#
+#########################################
+for line in sys.stdin:
+    if line[:-1] == "1":
+        preset -= 1
+        if preset < 0:
+            preset = 127
+        LoadSamples()
+
+    elif line[:-1] == "-1":
+        preset += 1
+        if preset > 127:
+            preset = 0
+        LoadSamples()
 
 
 #########################################
