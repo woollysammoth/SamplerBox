@@ -489,7 +489,14 @@ while True:
             midi_in[-1].open_port(port)
             print 'Opened MIDI: ' + port
     previous = midi_in[0].ports
-    for line in sys.stdin:
+    time.sleep(2)
+
+
+
+
+while 1:
+    time.sleep(0.01)
+    for line in sys.stdin
         if line[:-1] == "1":
             preset -= 1
             if preset < 0:
@@ -500,4 +507,3 @@ while True:
             if preset > 127:
                 preset = 0
             LoadSamples()
-    time.sleep(2)
