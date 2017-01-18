@@ -465,6 +465,20 @@ if USE_SERIALPORT_MIDI:
     MidiThread.start()
 
 
+def increasePreset():
+    global preset
+    preset += 1
+    if preset > 127:
+        preset = 0
+    LoadSamples()
+
+def decreasePreset():
+    global preset
+    preset -= 1
+    if preset < 0:
+        preset = 127
+    LoadSamples()
+
 #########################################
 # LOAD FIRST SOUNDBANK
 #
@@ -489,16 +503,5 @@ while True:
             midi_in[-1].open_port(port)
             print 'Opened MIDI: ' + port
     previous = midi_in[0].ports
-    for line in sys.stdin
-        if line[:-1] == "1":
-            preset -= 1
-            if preset < 0:
-                preset = 127
-            LoadSamples()
-        elif line[:-1] == "-1":
-            preset += 1
-            if preset > 127:
-                preset = 0
-            LoadSamples()
     time.sleep(2)
 
