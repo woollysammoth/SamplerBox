@@ -15,7 +15,7 @@
 #########################################
 
 AUDIO_DEVICE_ID = 2                     # change this number to use another soundcard
-SAMPLES_DIR = "."                       # The root directory containing the sample-sets. Example: "/media/" to look for samples on a USB stick / SD card
+SAMPLES_DIR = "/home/pi/usb/"                       # The root directory containing the sample-sets. Example: "/media/" to look for samples on a USB stick / SD card
 USE_SERIALPORT_MIDI = False             # Set to True to enable MIDI IN via SerialPort (e.g. RaspberryPi's GPIO UART pins)
 USE_I2C_7SEGMENTDISPLAY = False         # Set to True to use a 7-segment display via I2C
 USE_BUTTONS = False                     # Set to True to use momentary buttons (connected to RaspberryPi's GPIO pins) to change preset
@@ -489,13 +489,6 @@ while True:
             midi_in[-1].open_port(port)
             print 'Opened MIDI: ' + port
     previous = midi_in[0].ports
-    time.sleep(2)
-
-
-
-
-while 1:
-    time.sleep(0.01)
     for line in sys.stdin
         if line[:-1] == "1":
             preset -= 1
@@ -507,3 +500,5 @@ while 1:
             if preset > 127:
                 preset = 0
             LoadSamples()
+    time.sleep(2)
+
