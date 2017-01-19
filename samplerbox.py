@@ -18,7 +18,7 @@ AUDIO_DEVICE_ID = 2                     # change this number to use another soun
 SAMPLES_DIR = "/home/pi/usb/"                       # The root directory containing the sample-sets. Example: "/media/" to look for samples on a USB stick / SD card
 USE_SERIALPORT_MIDI = False             # Set to True to enable MIDI IN via SerialPort (e.g. RaspberryPi's GPIO UART pins)
 USE_I2C_7SEGMENTDISPLAY = False         # Set to True to use a 7-segment display via I2C
-USE_BUTTONS = False                     # Set to True to use momentary buttons (connected to RaspberryPi's GPIO pins) to change preset
+USE_BUTTONS = True                     # Set to True to use momentary buttons (connected to RaspberryPi's GPIO pins) to change preset
 MAX_POLYPHONY = 80                      # This can be set higher, but 80 is a safe value
 
 
@@ -367,31 +367,32 @@ except:
 #########################################
 
 if USE_BUTTONS:
-    import RPi.GPIO as GPIO
+    # import RPi.GPIO as GPIO
 
     lastbuttontime = 0
 
     def Buttons():
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        # GPIO.setmode(GPIO.BCM)
+        # GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        # GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         global preset, lastbuttontime
         while True:
             now = time.time()
-            if not GPIO.input(18) and (now - lastbuttontime) > 0.2:
-                lastbuttontime = now
-                preset -= 1
-                if preset < 0:
-                    preset = 127
-                LoadSamples()
-
-            elif not GPIO.input(17) and (now - lastbuttontime) > 0.2:
-                lastbuttontime = now
-                preset += 1
-                if preset > 127:
-                    preset = 0
-                LoadSamples()
-
+            for line in sys.stdin:
+                if line[:-1] == "-1" and (now - lastbuttontime) > 0.2:
+                    print 'PRESED DOWN'
+                    lastbuttontime = now
+                    preset -= 1
+                    if preset < 0:
+                        preset = 127
+                    LoadSamples()
+                elif line[:-1] == "1" and (now - lastbuttontime) > 0.2:
+                    print 'PRESED UP'
+                    lastbuttontime = now
+                    preset += 1
+                    if preset > 127:
+                        preset = 0
+                    LoadSamples()
             time.sleep(0.020)
 
     ButtonsThread = threading.Thread(target=Buttons)
@@ -465,19 +466,19 @@ if USE_SERIALPORT_MIDI:
     MidiThread.start()
 
 
-def increasePreset():
-    global preset
-    preset += 1
-    if preset > 127:
-        preset = 0
-    LoadSamples()
+# def increasePreset():
+#     global preset
+#     preset += 1
+#     if preset > 127:
+#         preset = 0
+#     LoadSamples()
 
-def decreasePreset():
-    global preset
-    preset -= 1
-    if preset < 0:
-        preset = 127
-    LoadSamples()
+# def decreasePreset():
+#     global preset
+#     preset -= 1
+#     if preset < 0:
+#         preset = 127
+#     LoadSamples()
 
 #########################################
 # LOAD FIRST SOUNDBANK
